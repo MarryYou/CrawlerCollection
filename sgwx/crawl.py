@@ -11,7 +11,7 @@ class CeawlInit:
     # 初始化一些需要的东西
     # 搜狗微信文章下列表的baseurl 以及 列表下几个分类的url
     # 注:网页的第一次显示数据以及后续加载的文章请求地址是不同的
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         self.base_url = 'http://weixin.sogou.com/pcindex/pc/'
         self.new_list = []
         for i in range(0, 21):

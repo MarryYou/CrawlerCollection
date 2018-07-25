@@ -6,10 +6,12 @@ import pymongo
 
 
 class DataBase:
-    def __init__(self, *args, **kwargs):  # 这里先保留 以后再改可配置mongodb 的一些基本信息 现在先写进class 里
+    def __init__(self, dbName, name):  # 这里先保留 以后再改可配置mongodb 的一些基本信息 现在先写进class 里
         self.client = pymongo.MongoClient(host='127.0.0.1', port=27017)
-        self.db = self.client['sgwx']
-        self.collection = self.db['titleInfo']
+        self.dbName = str(dbName)
+        self.db = self.client[self.dbName]
+        self.name = str(name)
+        self.collection = self.db[self.name]
 
     def add_many(self, data):  # 插入多条 传入list
         self.collection.insert_many(data)

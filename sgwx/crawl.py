@@ -13,10 +13,17 @@ class CeawlInit:
     # 注:网页的第一次显示数据以及后续加载的文章请求地址是不同的
     def __init__(self):
         self.base_url = 'http://weixin.sogou.com/pcindex/pc/'
-        self.new_list = []
+        self.new_list = []  # 这里是首页文章获取的url存储的list
+        self.next_list = []  # 这里是分类文章更多内容获取的url存储的list
         for i in range(0, 21):
             self.new_list.append(self.base_url + 'pc_' +
-                                 str(i)+'/pc_'+str(i)+'.html')
+                                 str(i)+'/pc_'+str(i)+'.html')  # 这里是首页分类的第一次url
+        for i in range(0, 21):
+            list = []
+            for j in range(1, 6):  # 这里是为了获取更多内容5页的url
+                list.append(self.base_url + 'pc_' +
+                            str(i)+'/'+str(j)+'.html')  # 这里是分类文章更多内容的url格式 注意这里是没有pc_的
+            self.next_list.append(list)
         # 这里是首页第一次返回的列表中url
         self.user_agents = [
             'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5702.400 QQBrowser/10.2.1893.400',
@@ -70,9 +77,15 @@ def main():
     prepareThings = CeawlInit()
     for link in prepareThings.new_list:
         sgwxCrawl(link, prepareThings.headers)
-        print('当前完成列表中第 %s 的爬取' % link)
+        print('当前完成首页分类中 %s 的爬取' % link)
         time.sleep(1)
-    print('完成收工')
+    print('首页分类首页内容完成')
+    for linkList in prepareThings.next_list:
+        for link in linkList:
+            sgwxCrawl(link, prepareThings.headers)
+            print('当前完成分类更多5页内容中 %s 的爬取' % link)
+            time.sleep(1)
+    print('更多分类下5页爬取完成')
 
 
 if __name__ == '__main__':
